@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn-gitops
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Fuente 1: Chart de Helm oficial de Longhorn
+    - repoURL: 'https://charts.longhorn.io'
+      chart: longhorn
+      targetRevision: 1.11.1
+      helm:
+        valueFiles:
+          - $values/longhorn/values.yaml
+
+    # Fuente 2: Tu repositorio en GitLab (extrae el values y despliega longhorn-cert.yaml)
+    - repoURL: 'https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git'
+      targetRevision: HEAD
+      ref: values
+      path: longhorn
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: longhorn-system
+
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

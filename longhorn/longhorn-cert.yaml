@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: longhorn-tls-v2
+  namespace: longhorn-system
+spec:
+  secretName: longhorn-tls-v2
+  issuerRef:
+    name: step-ca-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - longhorn.fluffy.lst

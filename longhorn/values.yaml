@@ -1,0 +1,14 @@
+persistence:
+  defaultClassReplicaCount: 3
+defaultSettings:
+  defaultDataLocality: best-effort
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  host: longhorn.fluffy.lst
+  annotations:
+    cert-manager.io/cluster-issuer: step-ca-issuer
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  tls: true
+  tlsSecret: longhorn-tls-v2
