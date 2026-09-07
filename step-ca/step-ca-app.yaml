@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: step-ca-gitops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://smallstep.github.io/helm-charts
+    targetRevision: 1.25.2
+    chart: step-certificates
+    helm:
+      values: |
+        persistence:
+          enabled: true
+          size: 1Gi
+          storageClass: "longhorn"
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+
+        existingSecrets:
+          enabled: true
+          ca: true
+          certsAsSecret: true
+          configAsSecret: false
+          issuer: false
+          sshHostCa: false
+          sshUserCa: false
+
+        injectEnv:
+          - name: STEP_UNATTENDED
+            value: "true"
+        tools:
+          enabled: false
+        bootstrap:
+          enabled: false
+          configmaps: false
+          secrets: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: step-ca
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

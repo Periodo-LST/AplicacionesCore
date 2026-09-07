@@ -1,0 +1,106 @@
+# Consolidado desde step-ca-app.yaml (values inline) + values.yaml suelto,
+# con las rutas de certificados, dnsNames y el bug de YAML ("y" -> "true") corregidos.
+
+persistence:
+  enabled: true
+  size: 2Gi
+  storageClass: "longhorn"
+
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+existingSecrets:
+  enabled: true
+  ca: true
+  certsAsSecret: true
+  configAsSecret: false
+  issuer: false
+  sshHostCa: false
+  sshUserCa: false
+
+injectEnv:
+  - name: STEP_UNATTENDED
+    value: "true"
+
+tools:
+  enabled: false
+
+bootstrap:
+  enabled: false
+  configmaps: false
+  secrets: false
+
+certificates:
+  custom: true
+
+injectCerts:
+  enabled: false
+
+extraVolumeMounts:
+  - mountPath: /home/step/mis-certs
+    name: certificados-eso
+    readOnly: true
+
+extraVolumes:
+  - name: certificados-eso
+    secret:
+      secretName: step-ca-custom-certs
+
+ca:
+  password:
+    existingSecret: manual-step-ca-password
+  config:
+    address: :9000
+    insecureAddress: ""
+    # Rutas reales dentro del secret de certificados (coinciden con las claves
+    # root_ca.crt / intermediate_ca.crt del secret step-ca-gitops-step-certificates-certs)
+    root: /home/step/certs/root_ca.crt
+    crt: /home/step/certs/intermediate_ca.crt
+    key: /home/step/secrets/intermediate_ca_key
+    federatedRoots: null
+    logger:
+      format: text
+    db:
+      type: badgerv2
+      dataSource: /home/step/db
+      badgerFileLoadingMode: ""
+    # Nombre externo (Ingress/passthrough) + nombre interno del Service en el
+    # cluster, para que el certificado de servidor sea válido por ambas vías.
+    dnsNames:
+      - step-ca.fluffy.lst
+      - step-ca-gitops-step-certificates.step-ca.svc.cluster.local
+      - step-ca-gitops-step-certificates.step-ca.svc
+      - step-ca-gitops-step-certificates
+    tls:
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+      minVersion: 1.2
+      maxVersion: 1.3
+      renegotiation: false
+    authority:
+      provisioners:
+        - name: admin
+          type: JWK
+          key:
+            use: sig
+            kty: EC
+            kid: MePT_cBF60B1_b6YTXQ8dXqPlxCopD10Myqpwbkhzmo
+            crv: P-256
+            alg: ES256
+            x: ln0Vnc5ej_qR_bcJ3syqupQ-iCE_eIwI7tSPBiJRav4
+            # OJO: esta clave DEBE ir entre comillas. Sin comillas, YAML 1.1
+            # interpreta "y" como booleano y la corrompe al guardar/re-serializar.
+            "y": WZoDDF8TjLLKNpKjNCEgxb_-kZmAUDtnqfD7UGxp1JQ
+          encryptedKey: eyJhbGciOiJQQkVTMi1IUzI1NitBMTI4S1ciLCJjdHkiOiJqd2sranNvbiIsImVuYyI6IkEyNTZHQ00iLCJwMmMiOjEwMDAwMCwicDJzIjoiVjJHSTZlQTBLYUZ3Wm9hX3B4elVUZyJ9.Yd92_XWLbe0bQ2WpHUILpCGLu7Tn0MVlHlDTKE_69o3Vm_Zc0J1VLQ.IVeShQT3MbKamEaX.lejHa8G_7pJ9xuuEemG3O96_IkKgImRZnCnv74hr71qqqe7ozUWYgJuBtJuu49EBMEtZUY9f9I13d-n5TlZACGh1_Naanbjh6Cp304mLmSXoPvIVjj--_FlsedKLhacqjOVIEXtmm82iqRpdCFOGe4-D4uxnZ3i_0E3hd0dmjY0v3Po6bqNiZEb3p5SrZF42LI3xPITGFN4lsw9ABgwhNbqzyL7leBa8lkS4s6fBgiMarWbAODPsydixZmoDg8zsuQUyURv2BugSqAoK8MtcnggaMBQAh0k9qUXYxw1Tdldc2_ZYDA8lTRQIn_WuFnZcUBH3UwWvQLwnuKKXckU.iC9KsduAgTN68eJCM-w2MA
+        - name: acme-internal
+          type: ACME
+
+profiles:
+  defaults:
+    ca-url: https://step-ca-gitops-step-certificates.step-ca.svc.cluster.local
+    ca-config: /home/step/config/ca.json
+    fingerprint: cd5f0378d937e415c7bfe3ae5ee8788e77300db55844f77c9cb04d4439da2666
+    root: /home/step/certs/root_ca.crt
