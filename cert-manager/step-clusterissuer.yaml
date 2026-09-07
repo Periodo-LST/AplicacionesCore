@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: step-ca-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    caBundle: |
+      LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUI3RENDQVpLZ0F3SUJBZ0lRZTVDSVQz
+      SUZXTXE4eitodElvMmd0REFLQmdncWhrak9QUVFEQWpCQU1Sb3cKR0FZRFZRUUtFeEZUZEdW
+      d0lFTmxjblJwWm1sallYUmxjekVpTUNBR0ExVUVBeE1aVTNSbGNDQkRaWEowYVdacApZMkYw
+      WlhNZ1VtOXZkQ0JEUVRBZUZ3MHlOakEyTWpZd09ERTVNelZhRncwek5qQTJMak13T0RFNU16
+      VmFNRWd4CkdqQVlCZ05WQkFvVEVWTjBaWEFnUTJWeWRHbG1hV05oZEdWek1Tb3dLQVlEVlFR
+      REV5RlRkR1Z3SUVObGNuUnAKWm1sallYUmxjeUJKYm5SbGNtMWxaR2xoZEdVZ1EwRXdXVEFU
+      QmdjcWhrak9QUUlCQmdncWhrak9QUU1CQndOQwpBQVJ5OU94dmk1cXVJUnlrc0g5Wm5GN0ZV
+      UmxIajU0YUJqSDE3bGJqaCsybS9BKzhJQ3g5bVgrZWJTakhPazZDClF1QkdVYnpYblZmc2Rw
+      V3R2d1NoRmtSSW8yWXdaREFPQmdOVkhROEJBZjhFQkFNQ0FRWXdFZ1lEVlIwVEFRSC8KQkFn
+      d0JnRUIvd0lCQURBZEJnTlZIUTRFRmdRVWZxWHB5bm9VLzkxWXNDTVdYTlp5eVJhNExzY3dH
+      SHVZR0NjcUdTTTQ5QkFNQ0EwZ0FNRVVDSUJUYlV0Q25jdHhwbzZPM0hGRm5vNDFzamZNT1B5
+      ZnpaM2RydGVoY1pnUWxBaUVBb1RLWWxuWU04V0EwCjhheXJHaDdEcVh4Y0ZOMVpEeFhyTzVi
+      d1YwT1lmT0U9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    email: it@lst.tfo.upm.es
+    privateKeySecretRef:
+      name: step-ca-account-key-v2
+    server: https://step-ca-gitops-step-certificates.step-ca.svc.cluster.local/acme/acme-internal/directory
+    solvers:
+      - http01:
+          ingress:
+            class: traefik
