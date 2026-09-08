@@ -14,4 +14,20 @@ spec:
     solvers:
       - http01:
           ingress:
+            class: traefikapiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: step-ca-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ4ekNDQVcyZ0F3SUJBZ0lSQUxkUkNtTDdYcTBvN0t0QjZtejEwK0l3Q2dZSUtvWkl6ajBFQXdJd0dqRVkKTUJZR0ExVUVBeE1QVW05dmRDQkRRU0JNVTFRdFZWQk5NQjRYRFRJMk1EVXlOVEE1TWpReU0xb1hEVE0yTURVeQpNakE1TWpReU0xb3dHakVZTUJZR0ExVUVBeE1QVW05dmRDQkRRU0JNVTFRdFZWQk5NRmt3RXdZSEtvWkl6ajBDCkFRWUlLb1pJemowREFRY0RRZ0FFaE1ZM3U5NVZhVEVyV3U0anp1dFpZbFFVZTdmclVkUm9PV3haNG41eWxOTnIKV0o3Vjdac1ZtSlVHemMwdG8yRitpZFc1WDRtUHcrcFUvckNuQ1NmZC9hT0JrekNCa0RBT0JnTlZIUThCQWY4RQpCQU1DQVlZd0VnWURWUjBUQVFIL0JBZ3dCZ0VCL3dJQkFUQWRCZ05WSFE0RUZnUVVYOEZNajY0WjN2dnY4dGhtCnRqSU9xdnk1U1VZd1N3WURWUjBlQVFIL0JFRXdQNkE5TUJDQ0RteHpkQzUwWm04dWRYQnRMbVZ6TUFXQ0EyeHoKZERBS2h3Z0tBQUFBL3dBQUFEQUtod2pBcUFBQS8vOEFBREFLaHdpS0JBckEvLy8vd0RBS0JnZ3Foa2pPUFFRRApBZ05JQURCRkFpQVBhQWhDUFJ5WEFvSUFqNkRIOXl6cVlxeWZJaDlqWkNzNjhyK0FCdmpQZFFJaEFLb0kyNGYvCjBIUFJCZSs0ZTFQYmlGMU1GYnpVSTFVUUJLeXB6REpPbnovSgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    email: it@lst.tfo.upm.es
+    privateKeySecretRef:
+      name: step-ca-account-key-v2
+    server: https://step-ca.fluffy.lst/acme/acme-internal/directory
+    solvers:
+      - http01:
+          ingress:
             class: traefik
