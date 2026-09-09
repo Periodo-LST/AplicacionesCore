@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault-gitops
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://helm.releases.hashicorp.com
+      chart: vault
+      targetRevision: 0.28.0
+      helm:
+        valueFiles:
+          - $values/vault/values.yaml
+
+    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+      targetRevision: HEAD
+      ref: values
+      path: vault
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
+
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      name: vault-gitops-agent-injector-cfg
+      jsonPointers:
+        - /webhooks/0/clientConfig/caBundle
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
