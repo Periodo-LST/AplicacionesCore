@@ -16,7 +16,6 @@ spec:
     - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
       targetRevision: HEAD
       ref: values
-      path: vault
 
   destination:
     server: https://kubernetes.default.svc
