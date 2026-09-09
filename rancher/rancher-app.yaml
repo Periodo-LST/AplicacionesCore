@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rancher-gitops
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://releases.rancher.com/server-charts/stable
+      chart: rancher
+      targetRevision: v2.14.2
+      helm:
+        valueFiles:
+          - $gitlab/apps/rancher/values.yaml
+
+    - repoURL: 'https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git'
+      targetRevision: HEAD
+      ref: gitlab
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cattle-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true

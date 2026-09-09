@@ -1,0 +1,25 @@
+hostname: rancher.fluffy.lst
+bootstrapPassword: admin
+privateCA: true
+
+startupProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 30
+
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  failureThreshold: 5
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  tls:
+    source: secret
+  extraAnnotations:
+    cert-manager.io/cluster-issuer: "step-ca-issuer"
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+
+tls: rancher-ingress
