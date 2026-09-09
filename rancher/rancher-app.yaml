@@ -8,12 +8,12 @@ spec:
   sources:
     - repoURL: https://releases.rancher.com/server-charts/stable
       chart: rancher
-      targetRevision: v2.14.2
+      targetRevision: 2.14.2
       helm:
         valueFiles:
-          - $gitlab/apps/rancher/values.yaml
+          - $gitlab/rancher/values.yaml
 
-    - repoURL: 'https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git'
+    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
       targetRevision: HEAD
       ref: gitlab
 
