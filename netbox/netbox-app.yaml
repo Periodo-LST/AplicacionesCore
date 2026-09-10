@@ -15,7 +15,7 @@ spec:
       helm:
         valueFiles:
           - $values/netbox/values.yaml
-    - repoURL: hhttps://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
       targetRevision: main
       ref: values
     - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
