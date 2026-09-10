@@ -1,4 +1,3 @@
-# --- CONFIGURACIÓN DE LA IMAGEN ---
 image:
   repository: netbox-community/netbox
   tag: v4.5.6
@@ -60,9 +59,6 @@ secretKey: "RSWSq+RaeBvZuodVBUK3tB3e7P0SemCiaDcIQMwQLVw/MLQRpbc="
 persistence:
   enabled: true
   existingClaim: "netbox-media-v2"
-  storageClass: "longhorn"
-  size: 5Gi
-  accessMode: ReadWriteMany
 
 ingress:
   enabled: true
