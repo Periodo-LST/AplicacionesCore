@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: netbox-gitops
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: netbox
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://charts.netbox.oss.netboxlabs.com/
+      chart: netbox
+      targetRevision: "5.0.10"
+      helm:
+        valueFiles:
+          - $values/netbox/values.yaml
+    - repoURL: https://gitlab.lst.tfo.upm.es/IT/rke-ha-ansible.git
+      targetRevision: main
+      ref: values
+    - repoURL: https://gitlab.lst.tfo.upm.es/IT/rke-ha-ansible.git
+      targetRevision: main
+      path: netbox/manifests/
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

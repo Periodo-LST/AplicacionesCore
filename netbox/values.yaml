@@ -1,0 +1,84 @@
+# --- CONFIGURACIÓN DE LA IMAGEN ---
+image:
+  repository: netbox-community/netbox
+  tag: v4.5.6
+  pullPolicy: IfNotPresent
+
+containerPort: 8080
+
+service:
+  port: 80
+  targetPort: 8080
+
+extraEnv:
+  - name: GRANIAN_EXTRA_ARGS
+    value: "--host=0.0.0.0"
+  - name: SERVER_HOST
+    value: "0.0.0.0"
+  - name: ALLOWED_HOSTS
+    value: "netbox.fluffy.lst"
+  - name: CSRF_TRUSTED_ORIGINS
+    value: "https://netbox.fluffy.lst"
+  - name: USE_X_FORWARDED_HOST
+    value: "true"
+
+postgresql:
+  enabled: false
+
+externalDatabase:
+  host: "netbox-postgres-svc.netbox.svc.cluster.local"
+  port: 5432
+  database: "netbox"
+  username: "netbox"
+  password: "RKE2admin2026"
+
+redis:
+  enabled: false
+  host: "netbox-redis-svc.netbox.svc.cluster.local"
+  port: 6379
+  password: "RKE2admin2026"
+
+tasksRedis:
+  host: "netbox-redis-svc.netbox.svc.cluster.local"
+  port: 6379
+  password: "RKE2admin2026"
+
+cachingRedis:
+  host: "netbox-redis-svc.netbox.svc.cluster.local"
+  port: 6379
+  password: "RKE2admin2026"
+
+startupProbe:
+  enabled: false
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+secretKey: "RSWSq+RaeBvZuodVBUK3tB3e7P0SemCiaDcIQMwQLVw/MLQRpbc="
+
+persistence:
+  enabled: true
+  existingClaim: "netbox-media-v2"
+  storageClass: "longhorn"
+  size: 5Gi
+  accessMode: ReadWriteMany
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    cert-manager.io/cluster-issuer: "step-ca-issuer"
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - host: netbox.fluffy.lst
+      paths:
+        - /
+  tls:
+    - secretName: netbox-tls
+      hosts:
+        - netbox.fluffy.lst
+
+remoteAuth:
+  enabled: false

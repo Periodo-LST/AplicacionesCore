@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: netbox-postgres-pvc
+  namespace: netbox
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi # Reducido de 10Gi a 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbox-postgres
+  namespace: netbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netbox-postgres
+  template:
+    metadata:
+      labels:
+        app: netbox-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: docker.io/library/postgres:15-alpine
+          env:
+            - name: POSTGRES_DB
+              value: "netbox"
+            - name: POSTGRES_USER
+              value: "netbox"
+            - name: POSTGRES_PASSWORD
+              value: "RKE2admin2026"
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: netbox-postgres-pvc-v2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbox-postgres-svc
+  namespace: netbox
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: netbox-postgres
