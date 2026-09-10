@@ -1,36 +1,51 @@
 image:
-  registry: docker.io
-  repository: bitnami/keycloak
+  repository: quay.io/keycloak/keycloak
   tag: "25.0.4"
-  digest: ""
 
-auth:
-  adminUser: admin
-  adminPassword: "RKE2admin2026"
+replicas: 1
 
-postgresql:
-  enabled: false
+command:
+  - "/opt/keycloak/bin/kc.sh"
+args:
+  - "start"
+  - "--http-enabled=true"
+  - "--http-port=8080"
+  - "--hostname-strict=false"
+  - "--proxy=edge"
 
-externalDatabase:
-  host: "keycloak-postgres-svc.keycloak.svc.cluster.local"
-  port: 5432
-  user: "keycloak"
-  database: "keycloak"
-  password: "RKE2admin2026"
+extraEnv: |
+  - name: KEYCLOAK_ADMIN
+    value: "admin"
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    value: "RKE2admin2026"
+  - name: KC_DB
+    value: postgres
+  - name: KC_DB_URL_HOST
+    value: keycloak-postgres-svc.keycloak.svc.cluster.local
+  - name: KC_DB_URL_PORT
+    value: "5432"
+  - name: KC_DB_USERNAME
+    value: keycloak
+  - name: KC_DB_PASSWORD
+    value: "RKE2admin2026"
+  - name: KC_DB_URL_DATABASE
+    value: keycloak
 
 ingress:
   enabled: true
-  ingressClassName: "traefik"
-  hostname: keycloak.fluffy.lst
+  ingressClassName: traefik
   annotations:
     cert-manager.io/cluster-issuer: "step-ca-issuer"
     traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
-  tls: true
-  extraSecrets:
-    - name: keycloak-tls
-      hosts:
+  rules:
+    - host: keycloak.fluffy.lst
+      paths:
+        - path: /
+  tls:
+    - hosts:
         - keycloak.fluffy.lst
+      secretName: keycloak-tls
 
 resources:
   limits:
