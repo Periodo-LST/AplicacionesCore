@@ -11,13 +11,16 @@ spec:
   sources:
     - repoURL: https://codecentric.github.io/helm-charts
       chart: keycloakx
-      targetRevision: "7.2.0"   # comprueba si hay una más reciente antes de aplicar
+      targetRevision: "7.2.0"
       helm:
         valueFiles:
           - $values/keycloak/values.yaml
     - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
       targetRevision: main
       ref: values
+    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+      targetRevision: main
+      path: keycloak/manifests/
   syncPolicy:
     automated:
       prune: true
