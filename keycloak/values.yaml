@@ -1,3 +1,9 @@
+image:
+  registry: docker.io
+  repository: bitnami/keycloak
+  tag: "25.0.4"
+  digest: ""
+
 auth:
   adminUser: admin
   adminPassword: "RKE2admin2026"
