@@ -70,6 +70,7 @@ ingress:
     - host: keycloak.fluffy.lst
       paths:
         - path: /
+          pathType: Prefix
   tls:
     - hosts:
         - keycloak.fluffy.lst
