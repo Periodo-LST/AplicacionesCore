@@ -13,6 +13,7 @@ args:
   - "--hostname-strict=false"
   - "--proxy=edge"
   - "--health-enabled=true"
+  - "--cache=local"
 
 extraEnv: |
   - name: KEYCLOAK_ADMIN
