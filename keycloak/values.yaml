@@ -14,7 +14,7 @@ args:
   - "--http-enabled=true"
   - "--http-port=8080"
   - "--hostname-strict=false"
-  - "--proxy=edge"
+  - "--proxy-headers=xforwarded"
   - "--health-enabled=true"
   - "--cache=local"
 
