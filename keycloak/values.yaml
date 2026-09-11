@@ -32,8 +32,6 @@ extraEnv: |
   - name: KC_DB_URL_DATABASE
     value: keycloak
 
-# --- probes corregidos para Keycloak 25 (Quarkus) ---
-# El endpoint de salud vive en el puerto de management (9000), NO en /auth/health.
 startupProbe: |
   httpGet:
     path: /health/started
