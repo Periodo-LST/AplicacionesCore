@@ -4,6 +4,9 @@ image:
 
 replicas: 1
 
+http:
+  relativePath: "/"
+
 command:
   - "/opt/keycloak/bin/kc.sh"
 args:
