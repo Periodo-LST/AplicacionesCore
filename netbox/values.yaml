@@ -9,6 +9,17 @@ service:
   port: 80
   targetPort: 8080
 
+extraVolumes:
+  - name: internal-ca
+    configMap:
+      name: netbox-internal-ca
+
+extraVolumeMounts:
+  - name: internal-ca
+    mountPath: /etc/ssl/certs/step-ca.crt
+    subPath: ca.crt
+    readOnly: true
+
 extraEnv:
   - name: GRANIAN_EXTRA_ARGS
     value: "--host=0.0.0.0"
@@ -20,6 +31,8 @@ extraEnv:
     value: "https://netbox.fluffy.lst"
   - name: USE_X_FORWARDED_HOST
     value: "true"
+  - name: REQUESTS_CA_BUNDLE
+    value: "/etc/ssl/certs/step-ca.crt"
 
 postgresql:
   enabled: false
