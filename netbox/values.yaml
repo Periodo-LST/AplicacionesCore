@@ -81,17 +81,21 @@ remoteAuth:
 
 extraConfig:
   - values:
-      sso_keycloak.py: |
-        AUTHENTICATION_BACKENDS = [
-        'social_core.backends.open_id_connect.OpenIdConnectAuth',
-        'netbox.authentication.ModelBackend',
-        ]
+      AUTHENTICATION_BACKENDS:
+        - 'social_core.backends.open_id_connect.OpenIdConnectAuth'
+        - 'netbox.authentication.ModelBackend'
 
-        REMOTE_AUTH_ENABLED = True
-        REMOTE_AUTH_BACKEND = 'social_core.backends.open_id_connect.OpenIdConnectAuth'
+      REMOTE_AUTH_ENABLED: true
+      REMOTE_AUTH_BACKEND: 'social_core.backends.open_id_connect.OpenIdConnectAuth'
 
-        SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = 'https://keycloak.fluffy.lst/realms/Nutty'
-        SOCIAL_AUTH_OIDC_KEY = 'netbox'
-        SOCIAL_AUTH_OIDC_SECRET = 'bfUDd69F4QNxxDYqCPDdKWrP5IrOELCT'     SOCIAL_AUTH_OIDC_SCOPE = ['openid', 'profile', 'email']
+      SOCIAL_AUTH_OIDC_OIDC_ENDPOINT: 'https://keycloak.fluffy.lst/realms/Nutty'
+      SOCIAL_AUTH_OIDC_KEY: 'netbox'
+      SOCIAL_AUTH_OIDC_SECRET: 'bfUDd69F4QNxxDYqCPDdKWrP5IrOELCT'
+      SOCIAL_AUTH_OIDC_SCOPE:
+        - openid
+        - profile
+        - email
 
-        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+      SECURE_PROXY_SSL_HEADER:
+        - HTTP_X_FORWARDED_PROTO
+        - https
