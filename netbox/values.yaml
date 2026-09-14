@@ -77,4 +77,15 @@ ingress:
         - netbox.fluffy.lst
 
 remoteAuth:
-  enabled: false
+  enabled: true
+
+extraConfig:
+  - values:
+      sso_keycloak.py: |
+        REMOTE_AUTH_BACKEND = 'social_core.backends.oidc.OIDCAuth'
+        
+        SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = 'https://keycloak.fluffy.lst/realms/Nutty'
+        SOCIAL_AUTH_OIDC_KEY = 'netbox'
+        SOCIAL_AUTH_OIDC_SECRET = 'bfUDd69F4QNxxDYqCPDdKWrP5IrOELCT'
+        
+        SOCIAL_AUTH_OIDC_SCOPE = ['openid', 'profile', 'email']
