@@ -20,7 +20,7 @@ extraVolumeMounts:
     subPath: ca.crt
     readOnly: true
 
-extraEnv:
+extraEnvVars:
   - name: GRANIAN_EXTRA_ARGS
     value: "--host=0.0.0.0"
   - name: SERVER_HOST
