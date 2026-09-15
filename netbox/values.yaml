@@ -1,7 +1,7 @@
 image:
-  repository: netbox-community/netbox
-  tag: v4.5.6
-  pullPolicy: IfNotPresent
+  repository: gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore/netbox-custom
+  tag: v4.5.6-plugins
+  pullPolicy: Always
 
 containerPort: 8080
 
@@ -9,18 +9,7 @@ service:
   port: 80
   targetPort: 8080
 
-extraVolumes:
-  - name: internal-ca
-    configMap:
-      name: netbox-internal-ca
-
-extraVolumeMounts:
-  - name: internal-ca
-    mountPath: /etc/ssl/certs/step-ca.crt
-    subPath: ca.crt
-    readOnly: true
-
-extraEnvs:
+extraEnv:
   - name: GRANIAN_EXTRA_ARGS
     value: "--host=0.0.0.0"
   - name: SERVER_HOST
@@ -31,8 +20,6 @@ extraEnvs:
     value: "https://netbox.fluffy.lst"
   - name: USE_X_FORWARDED_HOST
     value: "true"
-  - name: REQUESTS_CA_BUNDLE
-    value: "/etc/ssl/certs/step-ca.crt"
 
 postgresql:
   enabled: false
@@ -95,11 +82,11 @@ remoteAuth:
 extraConfig:
   - values:
       AUTHENTICATION_BACKENDS:
-        - 'social_core.backends.open_id_connect.OpenIdConnectAuth'
+        - 'social_core.backends.oidc.OIDCAuth'
         - 'netbox.authentication.ModelBackend'
 
-      REMOTE_AUTH_ENABLED: true
-      REMOTE_AUTH_BACKEND: 'social_core.backends.open_id_connect.OpenIdConnectAuth'
+      REMOTE_AUTH_ENABLED: false
+      SOCIAL_AUTH_VERIFY_SSL: false
 
       SOCIAL_AUTH_OIDC_OIDC_ENDPOINT: 'https://keycloak.fluffy.lst/realms/Nutty'
       SOCIAL_AUTH_OIDC_KEY: 'netbox'
@@ -112,3 +99,14 @@ extraConfig:
       SECURE_PROXY_SSL_HEADER:
         - HTTP_X_FORWARDED_PROTO
         - https
+
+      PLUGINS:
+        - 'netbox_custom_objects'
+        - 'validity'
+        - 'netbox_lists'
+        - 'netbox_inventory'
+        - 'netbox_attachments'
+        - 'netbox_topology_views'
+        - 'netbox_reorder_rack'
+        - 'netbox_secrets'
+        - 'netbox_dns'
