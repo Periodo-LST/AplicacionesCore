@@ -1,6 +1,6 @@
 image:
-  repository: netbox-community/netbox
-  tag: v4.5.6
+  repository: gitlab.lst.tfo.upm.es:4567/kubernetescore/aplicacionescore/netbox-custom
+  tag: v4.5.6-plugins-5619b284
   pullPolicy: IfNotPresent
 
 containerPort: 8080
@@ -8,6 +8,9 @@ containerPort: 8080
 service:
   port: 80
   targetPort: 8080
+
+imagePullSecrets:
+  - name: netbox-registry-creds
 
 extraVolumes:
   - name: internal-ca
@@ -112,3 +115,9 @@ extraConfig:
       SECURE_PROXY_SSL_HEADER:
         - HTTP_X_FORWARDED_PROTO
         - https
+
+      # Activación incremental: empezamos con 2 plugins para confirmar que
+      # arranca bien antes de sumar el resto. Ver README, sección "Plugins".
+      PLUGINS:
+        - 'netbox_attachments'
+        - 'netbox_topology_views'

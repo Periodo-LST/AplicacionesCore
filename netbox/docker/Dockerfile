@@ -13,4 +13,6 @@ RUN /usr/local/bin/uv pip install --python /opt/netbox/venv/bin/python3 --no-cac
     netbox-secrets \
     netbox-plugin-dns
 
+RUN mkdir -p /opt/netbox/netbox/static/netbox_topology_views/img
+
 USER unit
