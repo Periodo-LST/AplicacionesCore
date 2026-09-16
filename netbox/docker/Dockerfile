@@ -1,6 +1,8 @@
 FROM netboxcommunity/netbox:v4.5.6
 
-RUN pip install --no-cache-dir \
+USER root
+
+RUN python3 -m pip install --no-cache-dir \
     netboxlabs-netbox-custom-objects \
     netbox-validity \
     netbox-lists \
@@ -10,3 +12,5 @@ RUN pip install --no-cache-dir \
     netbox-reorder-rack \
     netbox-secrets \
     netbox-plugin-dns
+
+USER unit
