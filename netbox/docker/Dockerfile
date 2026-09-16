@@ -1,6 +1,6 @@
 FROM netboxcommunity/netbox:v4.5.6
 
-RUN /opt/netbox/venv/bin/pip install --no-cache-dir \
+RUN pip install --no-cache-dir \
     netboxlabs-netbox-custom-objects \
     netbox-validity \
     netbox-lists \
