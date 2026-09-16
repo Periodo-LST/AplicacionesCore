@@ -121,3 +121,5 @@ extraConfig:
         - 'netbox_topology_views'
         - 'netbox_secrets'
         - 'netbox_reorder_rack'
+        - 'netbox_lists'
+        - 'netbox_inventory'
