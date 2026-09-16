@@ -1,0 +1,19 @@
+stages:
+  - build
+
+build-netbox-image:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    IMAGE: registry.fluffy.lst/netbox-custom
+    TAG: v4.5.6-plugins-${CI_COMMIT_SHORT_SHA}
+  before_script:
+    - echo "$REGISTRY_PASSWORD" | docker login registry.fluffy.lst -u "$REGISTRY_USER" --password-stdin
+  script:
+    - docker build -t ${IMAGE}:${TAG} -f netbox/docker/Dockerfile netbox/docker
+    - docker push ${IMAGE}:${TAG}
+  rules:
+    - changes:
+        - netbox/docker/Dockerfile
