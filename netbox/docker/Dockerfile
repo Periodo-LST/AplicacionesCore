@@ -2,7 +2,7 @@ FROM netboxcommunity/netbox:v4.5.6
 
 USER root
 
-RUN python3 -m pip install --no-cache-dir \
+RUN /usr/local/bin/uv pip install --python /opt/netbox/venv/bin/python3 --no-cache \
     netboxlabs-netbox-custom-objects \
     netbox-validity \
     netbox-lists \
