@@ -1,16 +1,16 @@
 image:
-  repository: gitlab.lst.tfo.upm.es:4567/kubernetescore/aplicacionescore/netbox-custom
+  registry: gitlab.lst.tfo.upm.es:4567
+  repository: kubernetescore/aplicacionescore/netbox-custom
   tag: v4.5.6-plugins-5619b284
   pullPolicy: IfNotPresent
+  pullSecrets:
+    - netbox-registry-creds
 
 containerPort: 8080
 
 service:
   port: 80
   targetPort: 8080
-
-imagePullSecrets:
-  - name: netbox-registry-creds
 
 extraVolumes:
   - name: internal-ca
