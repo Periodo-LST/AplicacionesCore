@@ -116,8 +116,8 @@ extraConfig:
         - HTTP_X_FORWARDED_PROTO
         - https
 
-      # Activación incremental: empezamos con 2 plugins para confirmar que
-      # arranca bien antes de sumar el resto. Ver README, sección "Plugins".
       PLUGINS:
         - 'netbox_attachments'
         - 'netbox_topology_views'
+        - 'netbox_secrets'
+        - 'netbox_reorder_rack'
