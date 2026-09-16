@@ -1,8 +1,11 @@
-FROM netboxcommunity/netbox:v4.5.6
+FROM netboxcommunity/netbox:v4.7.0
 
 USER root
 
-RUN /usr/local/bin/uv pip install --python /opt/netbox/venv/bin/python3 --no-cache \
+RUN /usr/local/bin/uv pip install \
+    --python /opt/netbox/venv/bin/python3 \
+    --constraint /opt/netbox/requirements.txt \
+    --no-cache \
     netboxlabs-netbox-custom-objects \
     netbox-validity \
     netbox-lists \
