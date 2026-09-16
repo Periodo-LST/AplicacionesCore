@@ -123,3 +123,6 @@ extraConfig:
         - 'netbox_reorder_rack'
         - 'netbox_lists'
         - 'netbox_inventory'
+        - 'netbox_custom_objects'
+        - 'validity'
+        - 'netbox_dns'
