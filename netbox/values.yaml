@@ -1,5 +1,5 @@
 image:
-  registry: registry.lst.tfo.upm.es
+  registry: gitlab.lst.tfo.upm.es:4567
   repository: kubernetescore/aplicacionescore/netbox-custom
   tag: v4.5.6-plugins-462cb8cc
   pullPolicy: IfNotPresent
