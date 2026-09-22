@@ -40,6 +40,8 @@ spec:
           - --redirect-url=https://longhorn.fluffy.lst/oauth2/callback
           - --cookie-secure=true
           - --ssl-insecure-skip-verify=true
+          - --upstream=static://200
+          - --skip-provider-button=true
         ports:
         - containerPort: 4180
           name: http
@@ -56,3 +58,30 @@ spec:
     name: http
   selector:
     app: oauth2-proxy
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth2-proxy-ingress
+  namespace: longhorn-system
+  annotations:
+    cert-manager.io/cluster-issuer: step-ca-issuer
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - longhorn.fluffy.lst
+      secretName: longhorn-tls-v2
+  rules:
+    - host: longhorn.fluffy.lst
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy
+                port:
+                  number: 4180
