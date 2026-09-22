@@ -41,6 +41,8 @@ spec:
           - --cookie-secure=true
           - --ssl-insecure-skip-verify=true
           - --insecure-oidc-allow-unverified-email=true
+          - --user-id-claim=preferred_username
+          - --oidc-email-claim=preferred_username
           - --upstream=static://200
           - --skip-provider-button=true
         ports:
