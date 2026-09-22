@@ -33,7 +33,7 @@ spec:
           - --provider=keycloak-oidc
           - --oidc-issuer-url=https://keycloak.fluffy.lst/realms/Nutty
           - --client-id=longhorn
-          - --client-secret=sGbyqp68A87m7zXpWFbJwjgp24HECSZ3
+          - --client-secret=ahkqMmpqHCa5obap7nYnbqKA0aggnpDD
           - --cookie-secret=tyGOqdP1IDOxCfS3lN0ne2XVYnvJPfPw
           - --email-domain=*
           - --http-address=0.0.0.0:4180
