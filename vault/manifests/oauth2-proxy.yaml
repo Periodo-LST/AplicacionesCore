@@ -34,7 +34,7 @@ spec:
           - --oidc-issuer-url=https://keycloak.fluffy.lst/realms/Nutty
           - --client-id=vault
           - --client-secret=CoL7b9nycxVawOHh0fg7lm6o7Np7qxTc
-          - --cookie-secret=HFC2F5YCB_2H0SBYx7jjy73BENYzV7HCXXaboSgoCws=
+          - --cookie-secret=8LGawUNBwrLzmfu8MlmRk5H0n12ZiuIjBCNJLdus7Xg=
           - --email-domain=*
           - --http-address=0.0.0.0:4180
           - --redirect-url=https://vault.fluffy.lst/oauth2/callback
