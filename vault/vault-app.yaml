@@ -17,6 +17,10 @@ spec:
       targetRevision: HEAD
       ref: values
 
+    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+      targetRevision: HEAD
+      path: vault/manifests/
+
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
