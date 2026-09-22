@@ -99,8 +99,8 @@ extraObjects:
               - --provider=keycloak-oidc
               - --oidc-issuer-url=https://keycloak.fluffy.lst/realms/Nutty
               - --client-id=traefik
-              - --client-secret=TU_CLIENT_SECRET_DE_KEYCLOAK
-              - --cookie-secret=tyGOqdP1IDOxCfS3lN0ne2XVYnvJPfPw
+              - --client-secret=RF2xoJ7fHC0ZVagZIGBfOKNU73E0Hqh0
+              - --cookie-secret=JtpfWGajqTkF1yBl403quEqxV3Bo4u6nnwiQkLh1HHQ=
               - --email-domain=*
               - --http-address=0.0.0.0:4180
               - --redirect-url=https://traefik.fluffy.lst/oauth2/callback
