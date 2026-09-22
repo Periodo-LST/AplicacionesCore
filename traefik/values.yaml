@@ -1,87 +1,72 @@
-deployment:
-  kind: DaemonSet
+global:
+  enabled: true
+  tlsDisable: true
 
-updateStrategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxUnavailable: 1
-    maxSurge: 0
+injector:
+  enabled: true
 
-service:
-  type: ClusterIP
+server:
+  enabled: true
+  replicas: 1
 
-api:
-  dashboard: true
-
-ports:
-  web:
-    port: 8000
-    hostPort: 80
-    expose:
-      default: true
-  websecure:
-    port: 8443
-    hostPort: 443
-    expose:
-      default: true
-
-providers:
-  kubernetesCRD:
+  dataStorage:
     enabled: true
-  kubernetesIngress:
+    size: 2Gi
+    storageClass: "longhorn"
+    accessMode: ReadWriteOnce
+
+  ingress:
     enabled: true
+    ingressClassName: "traefik"
+    annotations:
+      cert-manager.io/cluster-issuer: "step-ca-issuer"
+      traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: "vault-vault-oauth@kubernetescrd"
+    hosts:
+      - host: vault.fluffy.lst
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: vault-tls
+        hosts:
+          - vault.fluffy.lst
 
-ingressRoute:
-  dashboard:
-    enabled: false
+  standalone:
+    enabled: true
+    config: |
+      ui = true
 
-extraObjects:
-  # 1. Redirección HTTPS para el dashboard
+      listener "tcp" {
+        tls_disable = 1
+        address     = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+
+      storage "raft" {
+        path = "/vault/data"
+      }
+
+extraManifests:
   - apiVersion: traefik.io/v1alpha1
     kind: Middleware
     metadata:
-      name: traefik-dashboard-redirect
-      namespace: traefik-system
-    spec:
-      redirectRegex:
-        regex: "^https?://traefik\\.fluffy\\.lst/($\vert{}dashboard$)"
-        replacement: "https://traefik.fluffy.lst/dashboard/"
-        permanent: true
-
-  # 2. Middleware ForwardAuth para Keycloak
-  - apiVersion: traefik.io/v1alpha1
-    kind: Middleware
-    metadata:
-      name: traefik-oauth
-      namespace: traefik-system
+      name: vault-oauth
+      namespace: vault
     spec:
       forwardAuth:
-        address: "http://oauth2-proxy.traefik-system.svc.cluster.local:4180/"
+        address: "http://oauth2-proxy.vault.svc.cluster.local:4180/"
         trustForwardHeader: true
         authResponseHeaders:
           - X-Auth-Request-User
           - X-Auth-Request-Email
 
-  # 3. Certificado TLS para Traefik Dashboard
-  - apiVersion: cert-manager.io/v1
-    kind: Certificate
-    metadata:
-      name: traefik-dashboard-cert
-      namespace: traefik-system
-    spec:
-      secretName: traefik-dashboard-tls
-      dnsNames:
-        - traefik.fluffy.lst
-      issuerRef:
-        name: step-ca-issuer
-        kind: ClusterIssuer
-
-  # 4. Deployment de OAuth2-Proxy
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: oauth2-proxy
-      namespace: traefik-system
+      namespace: vault
     spec:
       replicas: 1
       selector:
@@ -98,12 +83,12 @@ extraObjects:
             args:
               - --provider=keycloak-oidc
               - --oidc-issuer-url=https://keycloak.fluffy.lst/realms/Nutty
-              - --client-id=traefik
-              - --client-secret=RF2xoJ7fHC0ZVagZIGBfOKNU73E0Hqh0
-              - --cookie-secret=JtpfWGajqTkF1yBl403quEqxV3Bo4u6nnwiQkLh1HHQ=
+              - --client-id=vault
+              - --client-secret=TU_CLIENT_SECRET_VAULT
+              - --cookie-secret=tyGOqdP1IDOxCfS3lN0ne2XVYnvJPfPw
               - --email-domain=*
               - --http-address=0.0.0.0:4180
-              - --redirect-url=https://traefik.fluffy.lst/oauth2/callback
+              - --redirect-url=https://vault.fluffy.lst/oauth2/callback
               - --cookie-secure=true
               - --ssl-insecure-skip-verify=true
               - --insecure-oidc-allow-unverified-email=true
@@ -115,12 +100,11 @@ extraObjects:
             - containerPort: 4180
               name: http
 
-  # 5. Service de OAuth2-Proxy
   - apiVersion: v1
     kind: Service
     metadata:
       name: oauth2-proxy
-      namespace: traefik-system
+      namespace: vault
     spec:
       ports:
       - port: 4180
@@ -133,7 +117,7 @@ extraObjects:
     kind: Ingress
     metadata:
       name: oauth2-proxy-ingress
-      namespace: traefik-system
+      namespace: vault
       annotations:
         cert-manager.io/cluster-issuer: step-ca-issuer
         traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
@@ -142,10 +126,10 @@ extraObjects:
       ingressClassName: traefik
       tls:
         - hosts:
-            - traefik.fluffy.lst
-          secretName: traefik-dashboard-tls
+            - vault.fluffy.lst
+          secretName: vault-tls
       rules:
-        - host: traefik.fluffy.lst
+        - host: vault.fluffy.lst
           http:
             paths:
               - path: /oauth2
@@ -155,24 +139,3 @@ extraObjects:
                     name: oauth2-proxy
                     port:
                       number: 4180
-
-  - apiVersion: traefik.io/v1alpha1
-    kind: IngressRoute
-    metadata:
-      name: traefik-dashboard-ingressroute
-      namespace: traefik-system
-    spec:
-      entryPoints:
-        - web
-        - websecure
-      routes:
-        - match: Host(`traefik.fluffy.lst`) && (Path(`/`) || PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-          kind: Rule
-          services:
-            - name: api@internal
-              kind: TraefikService
-          middlewares:
-            - name: traefik-dashboard-redirect
-            - name: traefik-oauth
-      tls:
-        secretName: traefik-dashboard-tls
