@@ -34,7 +34,7 @@ spec:
           - --oidc-issuer-url=https://keycloak.fluffy.lst/realms/Nutty
           - --client-id=longhorn
           - --client-secret=sGbyqp68A87m7zXpWFbJwjgp24HECSZ3
-          - --cookie-secret=SECRETO_RANDOM_16_BYTES_BASE64
+          - --cookie-secret=tyGOqdP1IDOxCfS3lN0ne2XVYnvJPfPw
           - --email-domain=*
           - --http-address=0.0.0.0:4180
           - --redirect-url=https://longhorn.fluffy.lst/oauth2/callback
