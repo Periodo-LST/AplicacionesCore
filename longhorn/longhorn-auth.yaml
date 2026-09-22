@@ -40,6 +40,7 @@ spec:
           - --redirect-url=https://longhorn.fluffy.lst/oauth2/callback
           - --cookie-secure=true
           - --ssl-insecure-skip-verify=true
+          - --insecure-oidc-allow-unverified-email=true
           - --upstream=static://200
           - --skip-provider-button=true
         ports:
