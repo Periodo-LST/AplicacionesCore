@@ -8,6 +8,32 @@ injector:
 server:
   enabled: true
   replicas: 1
+  volumes:
+    - name: custom-ca
+      secret:
+        secretName: keycloak-ca-cert
+    - name: ca-certs
+      emptyDir: {}
+  volumeMounts:
+    - name: ca-certs
+      mountPath: /etc/ssl/certs
+  extraInitContainers:
+    - name: update-ca-certs
+      image: alpine:3.20
+      command:
+        - sh
+        - -c
+        - |
+          apk add --no-cache ca-certificates >/dev/null
+          cp /custom-ca/root.crt /usr/local/share/ca-certificates/keycloak-root-ca.crt
+          cp /custom-ca/intermediate.crt /usr/local/share/ca-certificates/keycloak-intermediate-ca.crt
+          update-ca-certificates
+          cp -r /etc/ssl/certs/. /tmp/ca-certs/
+      volumeMounts:
+        - name: custom-ca
+          mountPath: /custom-ca
+        - name: ca-certs
+          mountPath: /tmp/ca-certs
 
   dataStorage:
     enabled: true
