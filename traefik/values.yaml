@@ -62,7 +62,7 @@ extraObjects:
           - X-Auth-Request-User
           - X-Auth-Request-Email
 
-  # 3. Certificado TLS para Traefik Dashboard
+  # 3. Certificado TLS para Traefik Dashboard (único gestor de este secret)
   - apiVersion: cert-manager.io/v1
     kind: Certificate
     metadata:
@@ -115,7 +115,7 @@ extraObjects:
             - containerPort: 4180
               name: http
 
-  # 5. Service de OAuth2-Proxy
+ # 5. Service de OAuth2-Proxy
   - apiVersion: v1
     kind: Service
     metadata:
@@ -129,13 +129,13 @@ extraObjects:
       selector:
         app: oauth2-proxy
 
+  # 6. Ingress de OAuth2-Proxy — usa el secret existente, NO genera uno nuevo
   - apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
       name: oauth2-proxy-ingress
       namespace: traefik-system
       annotations:
-        cert-manager.io/cluster-issuer: step-ca-issuer
         traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
     spec:
