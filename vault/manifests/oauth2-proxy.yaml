@@ -45,6 +45,10 @@ spec:
           - --oidc-email-claim=preferred_username
           - --upstream=static://200
           - --skip-provider-button=true
+          - --reverse-proxy=true
+          - --set-xauthrequest=true
+          - --cookie-domain=vault.fluffy.lst
+          - --whitelist-domain=vault.fluffy.lst
         ports:
         - containerPort: 4180
           name: http
