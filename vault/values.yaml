@@ -18,16 +18,15 @@ server:
   ingress:
     enabled: true
     ingressClassName: "traefik"
+    pathType: Prefix
     annotations:
       cert-manager.io/cluster-issuer: "step-ca-issuer"
       traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
-      traefik.ingress.kubernetes.io/router.middlewares: vault-vault-oauth@kubernetescrd
     hosts:
       - host: vault.fluffy.lst
         paths:
-          - path: /
-            pathType: Prefix
+          - /
     tls:
       - secretName: vault-tls
         hosts:
