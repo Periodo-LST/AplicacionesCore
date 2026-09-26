@@ -31,13 +31,13 @@ spec:
         image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
         args:
           - --provider=keycloak-oidc
-          - --oidc-issuer-url=https://keycloak.fluffy.lst/realms/Nutty
-          - --client-id=longhorn
-          - --client-secret=ahkqMmpqHCa5obap7nYnbqKA0aggnpDD
-          - --cookie-secret=tyGOqdP1IDOxCfS3lN0ne2XVYnvJPfPw
+          - --oidc-issuer-url=https://xxx/realms/Nutty
+          - --client-id=xxx
+          - --client-secret=xxx
+          - --cookie-secret=xxx
           - --email-domain=*
           - --http-address=0.0.0.0:4180
-          - --redirect-url=https://longhorn.fluffy.lst/oauth2/callback
+          - --redirect-url=https://xxx/oauth2/callback
           - --cookie-secure=true
           - --ssl-insecure-skip-verify=true
           - --insecure-oidc-allow-unverified-email=true
@@ -75,10 +75,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - longhorn.fluffy.lst
+        - xxx
       secretName: longhorn-tls-v2
   rules:
-    - host: longhorn.fluffy.lst
+    - host: xxx
       http:
         paths:
           - path: /oauth2

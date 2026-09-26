@@ -7,7 +7,7 @@ defaultSettings:
 ingress:
   enabled: true
   ingressClassName: traefik
-  host: longhorn.fluffy.lst
+  host: xxx
   annotations:
     cert-manager.io/cluster-issuer: step-ca-issuer
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure

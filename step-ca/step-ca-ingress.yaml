@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: HostSNI(`step-ca.fluffy.lst`)
+    - match: HostSNI(`xxx`)
       services:
         - name: step-ca-gitops-step-certificates
           port: 443

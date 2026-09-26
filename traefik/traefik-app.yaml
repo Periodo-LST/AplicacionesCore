@@ -6,7 +6,6 @@ metadata:
 spec:
   project: default
   sources:
-    # Fuente 1: Helm Chart oficial de Traefik
     - repoURL: https://traefik.github.io/charts
       chart: traefik
       targetRevision: 33.0.0
@@ -14,8 +13,7 @@ spec:
         valueFiles:
           - $values/traefik/values.yaml
 
-    # Fuente 2: Tu repositorio en GitLab
-    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: xxx
       targetRevision: HEAD
       ref: values
 

@@ -20,9 +20,9 @@ args:
 
 extraEnv: |
   - name: KEYCLOAK_ADMIN
-    value: "admin"
+    value: "xxx"
   - name: KEYCLOAK_ADMIN_PASSWORD
-    value: "RKE2admin2026"
+    value: "xxx"
   - name: KC_DB
     value: postgres
   - name: KC_DB_URL_HOST
@@ -30,9 +30,9 @@ extraEnv: |
   - name: KC_DB_URL_PORT
     value: "5432"
   - name: KC_DB_USERNAME
-    value: keycloak
+    value: xxx
   - name: KC_DB_PASSWORD
-    value: "RKE2admin2026"
+    value: "xxx"
   - name: KC_DB_URL_DATABASE
     value: keycloak
 
@@ -70,13 +70,13 @@ ingress:
     traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
   rules:
-    - host: keycloak.fluffy.lst
+    - host: xxx
       paths:
         - path: /
           pathType: Prefix
   tls:
     - hosts:
-        - keycloak.fluffy.lst
+        - xxx
       secretName: keycloak-tls
 
 resources:

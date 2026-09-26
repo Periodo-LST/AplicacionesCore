@@ -16,7 +16,7 @@ spec:
       containers:
         - name: redis
           image: docker.io/library/redis:7-alpine
-          command: ["redis-server", "--requirepass", "RKE2admin2026"]
+          command: ["redis-server", "--requirepass", "xxx"]
           ports:
             - containerPort: 6379
 ---

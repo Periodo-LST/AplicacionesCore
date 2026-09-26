@@ -1,5 +1,5 @@
-hostname: rancher.fluffy.lst
-bootstrapPassword: admin
+hostname: xxx
+bootstrapPassword: xxx
 privateCA: true
 
 startupProbe:

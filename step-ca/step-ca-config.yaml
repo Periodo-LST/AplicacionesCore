@@ -13,7 +13,7 @@ data:
       "address": ":9000",
       "insecureAddress": "",
       "dnsNames": [
-        "step-ca.fluffy.lst"
+        "xxx"
       ],
       "logger": {
         "format": "text"
@@ -27,17 +27,17 @@ data:
         "provisioners": [
           {
             "type": "JWK",
-            "name": "admin",
+            "name": "xxx",
             "key": {
               "use": "sig",
               "kty": "EC",
-              "kid": "MePT_cBF60B1_b6YTXQ8dXqPlxCopD10Myqpwbkhzmo",
+              "kid": "xxx",
               "crv": "P-256",
               "alg": "ES256",
-              "x": "ln0Vnc5ej_qR_bcJ3syqupQ-iCE_eIwI7tSPBiJRav4",
-              "y": "WZoDDF8TjLLKNpKjNCEgxb_-kZmAUDtnqfD7UGxp1JQ"
+              "x": "xxx",
+              "y": "xxx"
             },
-            "encryptedKey": "eyJhbGciOiJQQkVTMi1IUzI1NitBMTI4S1ciLCJjdHkiOiJqd2sranNvbiIsImVuYyI6IkEyNTZHQ00iLCJwMmMiOjEwMDAwMCwicDJzIjoiVjJHSTZlQTBLYUZ3Wm9hX3B4elVUZyJ9.Yd92_XWLbe0bQ2WpHUILpCGLu7Tn0MVlHlDTKE_69o3Vm_Zc0J1VLQ.IVeShQT3MbKamEaX.lejHa8G_7pJ9xuuEemG3O96_IkKgImRZnCnv74hr71qqqe7ozUWYgJuBtJuu49EBMEtZUY9f9I13d-n5TlZACGh1_Naanbjh6Cp304mLmSXoPvIVjj--_FlsedKLhacqjOVIEXtmm82iqRpdCFOGe4-D4uxnZ3i_0E3hd0dmjY0v3Po6bqNiZEb3p5SrZF42LI3xPITGFN4lsw9ABgwhNbqzyL7leBa8lkS4s6fBgiMarWbAODPsydixZmoDg8zsuQUyURv2BugSqAoK8MtcnggaMBQAh0k9qUXYxw1Tdldc2_ZYDA8lTRQIn_WuFnZcUBH3UwWvQLwnuKKXckU.iC9KsduAgTN68eJCM-w2MA"
+            "encryptedKey": "xxx"
           },
           {
             "type": "ACME",
@@ -64,6 +64,6 @@ data:
     {
       "ca-url": "https://step-ca-step-certificates.step-ca.svc.cluster.local",
       "ca-config": "/home/step/config/ca.json",
-      "fingerprint": "cd5f0378d937e415c7bfe3ae5ee8788e77300db55844f77c9cb04d4439da2666",
+      "fingerprint": "xxx",
       "root": "/home/step/certs/root_ca.crt"
     }

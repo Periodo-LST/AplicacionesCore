@@ -15,10 +15,10 @@ spec:
       helm:
         valueFiles:
           - $values/netbox/values.yaml
-    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: xxx
       targetRevision: main
       ref: values
-    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: xxx
       targetRevision: main
       path: netbox/manifests/
   syncPolicy:

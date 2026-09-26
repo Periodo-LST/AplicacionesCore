@@ -41,7 +41,7 @@ kubectl get pods -n cattle-system
 kubectl get ingress -n cattle-system
 ```
 
-Accede a la UI en `<TODO: https://rancher.fluffy.lst o el hostname real>` y completa el asistente inicial (cambio de contraseña, URL del servidor, etc.).
+Accede a la UI en `<TODO: https://xxx o el hostname real>` y completa el asistente inicial (cambio de contraseña, URL del servidor, etc.).
 
 `<TODO>` Si Rancher usa un certificado emitido por `step-ca-issuer`, valida también:
 

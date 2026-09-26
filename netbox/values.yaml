@@ -1,6 +1,6 @@
 image:
-  registry: gitlab.lst.tfo.upm.es:4567
-  repository: kubernetescore/aplicacionescore/netbox-custom
+  registry: xxx
+  repository: xxx
   tag: v4.5.6-plugins-462cb8cc
   pullPolicy: IfNotPresent
   pullSecrets:
@@ -39,9 +39,9 @@ extraEnvs:
   - name: SERVER_HOST
     value: "0.0.0.0"
   - name: ALLOWED_HOSTS
-    value: "netbox.fluffy.lst"
+    value: "xxx"
   - name: CSRF_TRUSTED_ORIGINS
-    value: "https://netbox.fluffy.lst"
+    value: "https://xxx"
   - name: USE_X_FORWARDED_HOST
     value: "true"
   - name: REQUESTS_CA_BUNDLE
@@ -54,24 +54,24 @@ externalDatabase:
   host: "netbox-postgres-svc.netbox.svc.cluster.local"
   port: 5432
   database: "netbox"
-  username: "netbox"
-  password: "RKE2admin2026"
+  username: "xxx"
+  password: "xxx"
 
 redis:
   enabled: false
   host: "netbox-redis-svc.netbox.svc.cluster.local"
   port: 6379
-  password: "RKE2admin2026"
+  password: "xxx"
 
 tasksRedis:
   host: "netbox-redis-svc.netbox.svc.cluster.local"
   port: 6379
-  password: "RKE2admin2026"
+  password: "xxx"
 
 cachingRedis:
   host: "netbox-redis-svc.netbox.svc.cluster.local"
   port: 6379
-  password: "RKE2admin2026"
+  password: "xxx"
 
 startupProbe:
   enabled: false
@@ -80,7 +80,7 @@ livenessProbe:
 readinessProbe:
   enabled: false
 
-secretKey: "RSWSq+RaeBvZuodVBUK3tB3e7P0SemCiaDcIQMwQLVw/MLQRpbc="
+secretKey: "xxx"
 
 persistence:
   enabled: true
@@ -94,13 +94,13 @@ ingress:
     traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
   hosts:
-    - host: netbox.fluffy.lst
+    - host: xxx
       paths:
         - /
   tls:
     - secretName: netbox-tls
       hosts:
-        - netbox.fluffy.lst
+        - xxx
 
 remoteAuth:
   enabled: false
@@ -114,9 +114,9 @@ extraConfig:
       REMOTE_AUTH_ENABLED: true
       REMOTE_AUTH_BACKEND: 'social_core.backends.open_id_connect.OpenIdConnectAuth'
 
-      SOCIAL_AUTH_OIDC_OIDC_ENDPOINT: 'https://keycloak.fluffy.lst/realms/Nutty'
-      SOCIAL_AUTH_OIDC_KEY: 'netbox'
-      SOCIAL_AUTH_OIDC_SECRET: 'bfUDd69F4QNxxDYqCPDdKWrP5IrOELCT'
+      SOCIAL_AUTH_OIDC_OIDC_ENDPOINT: 'https://xxx/realms/Nutty'
+      SOCIAL_AUTH_OIDC_KEY: 'xxx'
+      SOCIAL_AUTH_OIDC_SECRET: 'xxx'
       SOCIAL_AUTH_OIDC_SCOPE:
         - openid
         - profile

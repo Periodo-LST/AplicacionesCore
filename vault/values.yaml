@@ -24,13 +24,13 @@ server:
       traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
-      - host: vault.fluffy.lst
+      - host: xxx
         paths:
           - /
     tls:
       - secretName: vault-tls
         hosts:
-          - vault.fluffy.lst
+          - xxx
 
   standalone:
     enabled: true

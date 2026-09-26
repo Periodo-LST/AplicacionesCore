@@ -40,7 +40,7 @@ kubectl create secret generic step-ca-gitops-step-certificates-secrets \
 # Password para descifrar la clave anterior
 kubectl create secret generic step-ca-gitops-step-certificates-ca-password \
   -n step-ca \
-  --type=smallstep.com/ca-password \
+  --type=xxx \
   --from-literal=password='<PASSWORD_CA>'
 
 # Password del provisioner JWK (descifra el "encryptedKey" del ca.json)
@@ -94,7 +94,7 @@ step-ca sirve su propio TLS (es la CA) — Traefik solo enruta por SNI sin desci
 Agregá una entrada en tu DNS interno (fuera del cluster) apuntando el hostname público de la CA a la IP que expone tu Ingress Controller (firewall/virtual switch/LoadBalancer, según tu topología):
 
 ```
-step-ca.fluffy.lst  →  <IP externa de Traefik>
+xxx  →  <IP externa de Traefik>
 ```
 
 Adicionalmente, para que los clientes ACME que corren **dentro** del cluster (como cert-manager) no dependan del firewall/DNS externo, hay un override en CoreDNS que resuelve el mismo hostname directo a la IP interna del Service:
@@ -105,7 +105,7 @@ kubectl edit configmap rke2-coredns-rke2-coredns -n kube-system
 
 ```
     hosts {
-    <ClusterIP del Service step-ca-gitops-step-certificates>  step-ca.fluffy.lst
+    <ClusterIP del Service step-ca-gitops-step-certificates>  xxx
     fallthrough
     }
 ```
@@ -114,7 +114,7 @@ kubectl edit configmap rke2-coredns-rke2-coredns -n kube-system
 
 ```bash
 kubectl -n step-ca run dns-test --rm -it --image=busybox --restart=Never -- \
-  nslookup step-ca.fluffy.lst
+  nslookup xxx
 ```
 
 ### 7. Desplegar el ClusterIssuer de cert-manager
@@ -139,7 +139,7 @@ kubectl get certificates -A   # certificados de cert-manager deberían renovar s
 ### Desde un cliente `step` (bootstrap + certificado manual)
 
 ```bash
-step ca bootstrap --ca-url https://step-ca.fluffy.lst --fingerprint <FINGERPRINT_ROOT_CRT>
+step ca bootstrap --ca-url https://xxx --fingerprint xxx
 step ca certificate "mi-servicio-externo.upm.es" certificado.crt certificado.key \
   --provisioner acme-internal
 ```
@@ -148,8 +148,8 @@ step ca certificate "mi-servicio-externo.upm.es" certificado.crt certificado.key
 
 ```bash
 certbot certonly --standalone \
-  --email it@lst.tfo.upm.es \
-  --server https://step-ca.fluffy.lst/acme/acme-internal/directory \
+  --email xxx \
+  --server https://xxx/acme/acme-internal/directory \
   -d mi-servicio-externo.upm.es
 ```
 
@@ -159,7 +159,7 @@ Proxmox tiene su propio cliente ACME integrado, no usa certbot:
 
 ```bash
 pvenode acme account register acme-internal tu-email@dominio.com \
-  --directory https://step-ca.fluffy.lst/acme/acme-internal/directory
+  --directory https://xxx/acme/acme-internal/directory
 pvenode acme cert order --force
 ```
 
@@ -174,7 +174,7 @@ metadata:
 spec:
   secretName: mi-servicio-tls
   dnsNames:
-    - mi-servicio.fluffy.lst
+    - xxx
   issuerRef:
     name: step-ca-issuer
     kind: ClusterIssuer
@@ -201,4 +201,4 @@ spec:
 ## Notas de seguridad
 
 - Los Secrets con material criptográfico (`-certs`, `-secrets`, `-ca-password`, `-provisioner-password`) se crean manualmente y **no están en este repositorio en texto plano**. Para un flujo 100% GitOps, considerar Sealed Secrets o External Secrets Operator + Vault.
-- El intermedio de esta CA tiene *Name Constraints* — no puede firmar para dominios fuera de lo permitido (por ejemplo, no puede emitir para `*.svc.cluster.local`). Esto es intencional y **no debe removerse** solo para simplificar el DNS interno; en su lugar, usa un hostname permitido (`*.lst`, `*.lst.tfo.upm.es`) resuelto vía CoreDNS a la IP interna correspondiente (ver sección DNS).
+- El intermedio de esta CA tiene *Name Constraints* — no puede firmar para dominios fuera de lo permitido (por ejemplo, no puede emitir para `*.svc.cluster.local`). Esto es intencional y **no debe removerse** solo para simplificar el DNS interno; en su lugar, usa el hostname permitido configurado y resuelto vía CoreDNS a la IP interna correspondiente (ver sección DNS).

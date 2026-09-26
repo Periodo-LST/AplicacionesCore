@@ -46,7 +46,7 @@ kubectl get pvc -n vault
 kubectl get pods -n vault
 ```
 
-Accede a la UI en `https://vault.fluffy.lst`.
+Accede a la UI en `https://xxx`.
 
 ## Errores comunes
 

@@ -6,18 +6,18 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://smallstep.github.io/helm-charts
+    - repoURL: xxx
       chart: step-certificates
       targetRevision: 1.25.2
       helm:
         valueFiles:
           - $values/step-ca/values.yaml
 
-    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: xxx
       targetRevision: HEAD
       ref: values
 
-    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: xxx
       targetRevision: HEAD
       path: step-ca
       directory:

@@ -3,7 +3,7 @@
 ## Requisitos previos
 
 - `kubectl` configurado contra el clúster.
-- Repositorio de GitLab (`aplicacionescore.git`) registrado en ArgoCD.
+- Repositorio de GitLab (`xxx`) registrado en ArgoCD.
 - Servicio `step-ca` operativo en el namespace `step-ca`, con su `ClusterIssuer` apuntando al hostname correcto (ver `step-ca.md`).
 - Traefik como IngressController (`ingressClassName: traefik`), usado por el solver `http01`.
 
@@ -66,7 +66,7 @@ metadata:
 spec:
   secretName: mi-servicio-tls
   dnsNames:
-    - mi-servicio.fluffy.lst   # debe caer bajo las Name Constraints de step-ca (*.lst o *.lst.tfo.upm.es)
+    - xxx   # debe caer bajo las Name Constraints configuradas en step-ca
   issuerRef:
     name: step-ca-issuer
     kind: ClusterIssuer
@@ -89,7 +89,7 @@ Si el estado pasa a `Ready: True`, el sistema de certificación funciona correct
 
 - **`caBundle` corrupto** (`cert bundle didn't contain any valid certificates`): el base64 se corrompió al copiar/pegar por terminal (un carácter de control o salto de línea mal puesto rompe el PEM interno). Solución: generarlo siempre con `kubectl get secret ... | base64 -d | openssl x509 -noout -text` para validar, y `base64 -w0` para producir el valor final — nunca a mano.
 
-- **`x509: certificate is valid for X, not Y`**: el `server` del `ClusterIssuer` usa un hostname (normalmente el Service interno `*.svc.cluster.local`) que **no coincide con ningún SAN** del certificado de servidor de step-ca. La causa de fondo suele ser que la CA raíz de step-ca tiene *Name Constraints* que impiden emitir certificados para `*.svc.cluster.local` (ver `step-ca.md`) — la solución **no** es añadir ese SAN (la CA lo rechazará y step-ca directamente crasheará al arrancar con `DNS name ... is not permitted by any constraint`), sino apuntar el `server` al hostname externo permitido (p. ej. `step-ca.fluffy.lst`) y asegurarse de que resuelve también **dentro** del clúster (vía CoreDNS, ver sección DNS de `step-ca.md`).
+- **`x509: certificate is valid for X, not Y`**: el `server` del `ClusterIssuer` usa un hostname (normalmente el Service interno `*.svc.cluster.local`) que **no coincide con ningún SAN** del certificado de servidor de step-ca. La causa de fondo suele ser que la CA raíz de step-ca tiene *Name Constraints* que impiden emitir certificados para `*.svc.cluster.local` (ver `step-ca.md`) — la solución **no** es añadir ese SAN (la CA lo rechazará y step-ca directamente crasheará al arrancar con `DNS name ... is not permitted by any constraint`), sino apuntar el `server` al hostname externo permitido (`xxx`) y asegurarse de que resuelve también **dentro** del clúster (vía CoreDNS, ver sección DNS de `step-ca.md`).
 
 - **`connect: connection refused` intermitente, incluso con todo bien configurado**: revisa si hay **más de una instalación de cert-manager corriendo en el mismo namespace**. Es fácil terminar con un release de Helm suelto (instalado antes de migrar a GitOps, con un `meta.helm.sh/release-name` distinto al de la Application de Argo) compitiendo con la instalación buena por el mismo `ClusterIssuer`. Diagnóstico:
   ```bash

@@ -15,7 +15,7 @@ spec:
           - $values/longhorn/values.yaml
 
     # Fuente 2: Tu repositorio en GitLab (extrae el values y despliega longhorn-cert.yaml)
-    - repoURL: 'https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git'
+    - repoURL: xxx
       targetRevision: HEAD
       ref: values
       path: longhorn

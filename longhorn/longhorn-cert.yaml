@@ -9,4 +9,4 @@ spec:
     name: step-ca-issuer
     kind: ClusterIssuer
   dnsNames:
-    - longhorn.fluffy.lst
+    - xxx

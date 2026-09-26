@@ -5,7 +5,7 @@ Guía para desplegar Longhorn en el clúster utilizando GitOps con ArgoCD y GitL
 ## Requisitos previos
 
 - `kubectl` configurado contra el clúster.
-- Repositorio de GitLab (`aplicacionescore.git`) registrado en ArgoCD.
+- Repositorio de GitLab (`xxx`) registrado en ArgoCD.
 - El issuer `step-ca-issuer` disponible en el clúster.
 
 ## Preparación de los nodos (en cada host del clúster)
@@ -43,4 +43,4 @@ kubectl get certificate -n longhorn-system
 kubectl get secret -n longhorn-system longhorn-tls-v2
 ```
 
-Si la aplicación en ArgoCD indica los estados `Synced` y `Healthy`, la interfaz web de Longhorn quedará disponible vía HTTPS a través de Traefik en `https://longhorn.fluffy.lst`.
+Si la aplicación en ArgoCD indica los estados `Synced` y `Healthy`, la interfaz web de Longhorn quedará disponible vía HTTPS a través de Traefik en `https://xxx`.

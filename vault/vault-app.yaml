@@ -13,7 +13,7 @@ spec:
         valueFiles:
           - $values/vault/values.yaml
 
-    - repoURL: https://gitlab.lst.tfo.upm.es/kubernetescore/aplicacionescore.git
+    - repoURL: xxx
       targetRevision: HEAD
       ref: values
 
